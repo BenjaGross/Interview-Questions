@@ -1,5 +1,4 @@
 require 'rspec'
-require 'pry'
 
 
 class Brackets 
@@ -23,6 +22,7 @@ class Brackets
     end
     result && stack.length == 0
   end
+  
 end
 
 describe 'Brackets' do 
