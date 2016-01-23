@@ -1,6 +1,5 @@
 require 'rspec'
 
-
 class Brackets 
 
   def self.test_brackets(input)
@@ -10,7 +9,7 @@ class Brackets
     opening_brackets = bracket_hash.values
     result = true
     i = 0
-    while (result == true)&& (i < brack.length)
+    while (result == true) && (i < brack.length)
       if opening_brackets.include?(brack[i])
         stack.push(brack[i])
         i+=1
@@ -22,7 +21,7 @@ class Brackets
     end
     result && stack.length == 0
   end
-  
+
 end
 
 describe 'Brackets' do 
