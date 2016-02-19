@@ -1,6 +1,7 @@
 require 'rspec'
 
-def anagrams?(str1, str2)  result = true
+def anagrams?(str1, str2)  
+  result = true
   if str1.length != str2.length
     result = false 
   else
