@@ -1,29 +1,35 @@
 require 'pp'
 require 'pry'
-class Hash
-   def Hash.new_nested_hash
-     Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
-   end
-end
+# class Hash
+#    def Hash.new_nested_hash
+#      Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
+#    end
+# end
 class Trie
-   @hash = Hash.new_nested_hash
    #@hash = Hash.new_nested_hash.update(true=>{})  # add empty string by default
-   class << self; attr_accessor :hash; end    # Trie.hash
+   # class << self; attr_accessor :hash; end    # Trie.hash
+   attr_accessor :hash
+
+   def initialize 
+      self.hash = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
+   end
+
    def <<(word)
       ca = word.split(//u)    # UTF-8 aware character array
       wl = ca.size            # word length
       str = ""
       wl.times { |x| str << "[ca.at(#{x})]" }
-      str = "Trie.hash" << str << "[true]"
+      str = "self.hash" << str << "[true]"
       #p str     # example: "Trie.hash[ca.at(0)][ca.at(1)][ca.at(2)][ca.at(3)][true]"
       eval(str)
    end
+
    def match(word)
       ca = word.split(//u)    # UTF-8 aware character array
       wl = ca.size            # word length
       str = ""
       wl.times { |x| str << ".fetch(ca.at(#{x}),nil)" }
-      str = "Trie.hash" << str << ".fetch(true,nil)"
+      str = "self.hash" << str << ".fetch(true,nil)"
       #p str   # example: "Trie.hash.fetch(ca.at(0),nil).fetch(ca.at(1),nil).fetch(ca.at(2),nil).fetch(true,nil)"
       ret = eval(str) rescue nil
 =begin
