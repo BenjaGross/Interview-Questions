@@ -1,49 +1,47 @@
 require 'pp'
 require 'pry'
-# class Hash
-#    def Hash.new_nested_hash
-#      Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
-#    end
-# end
+require 'rspec'
+
 class Trie
-   #@hash = Hash.new_nested_hash.update(true=>{})  # add empty string by default
-   # class << self; attr_accessor :hash; end    # Trie.hash
-   attr_accessor :hash
+   
+   attr_accessor :tree
 
    def initialize 
-      self.hash = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
+      self.tree = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
    end
 
-   def <<(word)
-      ca = word.split(//u)    # UTF-8 aware character array
-      wl = ca.size            # word length
+   def insert(word)
+      characters = word.split(//u)  
+      word_length = characters.size          
       str = ""
-      wl.times { |x| str << "[ca.at(#{x})]" }
-      str = "self.hash" << str << "[true]"
-      #p str     # example: "Trie.hash[ca.at(0)][ca.at(1)][ca.at(2)][ca.at(3)][true]"
-      eval(str)
+      word_length.times { |x| str << "[characters.at(#{x})]" }
+      insert_word_string = "self.tree" << str << "[true]"
+      # str = "self.tree[characters.at(0)][characters.at(1)][characters.at(2)][characters.at(3)][true]"
+      eval(insert_word_string)
    end
 
    def match(word)
-      ca = word.split(//u)    # UTF-8 aware character array
-      wl = ca.size            # word length
+      characters = word.split(//u) 
+      word_length = characters.size           
       str = ""
-      wl.times { |x| str << ".fetch(ca.at(#{x}),nil)" }
-      str = "self.hash" << str << ".fetch(true,nil)"
-      #p str   # example: "Trie.hash.fetch(ca.at(0),nil).fetch(ca.at(1),nil).fetch(ca.at(2),nil).fetch(true,nil)"
+      word_length.times { |x| str << ".fetch(characters.at(#{x}), nil)" }
+      str = "self.tree" << str << ".fetch(true, nil)"
+      # str = "self.tree.fetch(characters.at(0), nil).fetch(characters.at(1), nil).fetch(characters.at(2), nil).fetch(true, nil)"
       ret = eval(str) rescue nil
-=begin
-      # alternative
-      wl.times { |x| str << ".fetch(ca.at(#{x}),{})" }
-      str = "Trie.hash" << str << ".fetch(true,nil)"
-      #p str   # example: "Trie.hash.fetch(ca.at(0),{}).fetch(ca.at(1),{}).fetch(ca.at(2),{}).fetch(true,nil)"
-      ret = eval(str)
-=end
-      ret == {} ? true : false   # {} is the default value created by Trie.hash or Hash.new_nested_hash respectively
+
+      ret == {} ? true : false 
    end
 end
+
+# describe "Trie" do
+#    it "returns true" do
+#      collection.include?(7).should be_true
+#    end
+
+# end
+
 trie = Trie.new
-trie << "word"
+trie.insert("word")
 pp Trie.hash            
 p trie.match("word")      
 p trie.match("word2")   
