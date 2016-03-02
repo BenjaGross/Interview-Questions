@@ -1,6 +1,3 @@
-require 'pry'
-require 'rspec'
-
 class Trie
    
    attr_accessor :tree
@@ -13,8 +10,10 @@ class Trie
       characters = word.split(//u)  
       word_length = characters.size          
       insert_word_string = ""
-      word_length.times { |x| insert_word_string << "[characters.at(#{x})]" }
+      word_length.times { |x| str << "[characters.at(#{x})]" }
       insert_word_string = "self.tree" << str << "[true]"
+
+
       # str = "self.tree[characters.at(0)][characters.at(1)][characters.at(2)][characters.at(3)][true]"
       eval(insert_word_string)
    end
@@ -31,10 +30,3 @@ class Trie
       ret == {} ? true : false 
    end
 end
-
-# describe "Trie" do
-#    it "returns true" do
-#      collection.include?(7).should be_true
-#    end
-
-# end
