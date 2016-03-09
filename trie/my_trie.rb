@@ -1,11 +1,10 @@
 require 'pry'
-require 'rspec'
-
 class Trie
    
-   attr_accessor :tree
+   attr_accessor :tree, :wildcard
 
    def initialize 
+      self.wildcard = "*"
       self.tree = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
    end
 
@@ -19,7 +18,24 @@ class Trie
    def match(word)
       characters = word.split("")           
       pointer = self.tree
-      characters.each { |char| pointer = pointer.fetch(char, nil) rescue nil }
+      characters.each do |char| 
+         pointer = pointer.fetch(char, nil) rescue nil 
+      end
+      result = pointer.fetch(true, nil) rescue nil
+      result == {} ? true : false 
+   end
+
+   def match_wildcard(word)
+      characters = word.split("")           
+      pointer = self.tree
+      characters.each do |char| 
+         if char == self.wildcard
+            binding.pry
+            pointer = pointer.fetch(pointer.keys.first, nil) rescue nil 
+         else
+            pointer = pointer.fetch(char, nil) rescue nil 
+         end
+      end
       result = pointer.fetch(true, nil) rescue nil
       result == {} ? true : false 
    end
@@ -30,8 +46,14 @@ trie.insert("salad")
 trie.insert("sapple")
 trie.insert("bramble")
 trie.insert("brad")
-puts trie.match("salad")
-puts trie.match("sapple")
-puts trie.match("salads")
-puts trie.tree
+# print "Expect True: " 
+# puts trie.match("salad")
+# print "Expect True with wildcard: " 
+# puts trie.match("s*lad")
+# print "Expect True: " 
+# puts trie.match("sapple")
+# print "Expect false: " 
+# puts trie.match("salads")
 
+print "Expect True"
+puts trie.match_wildcard("s*pple")
