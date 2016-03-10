@@ -28,9 +28,11 @@ class Trie
    def match_wildcard(word)
       characters = word.split("")           
       pointer = self.tree
+      all_branches = []
       characters.each do |char| 
          if char == self.wildcard
             binding.pry
+            # Loop through each key at that level and recursively call the match function
             pointer = pointer.fetch(pointer.keys.first, nil) rescue nil 
          else
             pointer = pointer.fetch(char, nil) rescue nil 
@@ -38,14 +40,24 @@ class Trie
       end
       result = pointer.fetch(true, nil) rescue nil
       result == {} ? true : false 
+
+      # all_branches.include?(true)
    end
+
+   def recursive_match_wildcard(word, tree_state)
+
+   end
+
 end
 
+
 trie = Trie.new
-trie.insert("salad")
-trie.insert("sapple")
-trie.insert("bramble")
-trie.insert("brad")
+# trie.insert("salad")
+# trie.insert("sapple")
+# trie.insert("bramble")
+# trie.insert("brad")
+trie.insert("abcqv")
+trie.insert("abcqr")
 # print "Expect True: " 
 # puts trie.match("salad")
 # print "Expect True with wildcard: " 
