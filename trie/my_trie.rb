@@ -28,16 +28,13 @@ class Trie
    def match_wildcard(word)
       characters = word.split("")           
       pointer = self.tree
-      matched_string = []
+      matched_string = [characters.first]
       characters.each_with_index do |char, i| 
          pointer = (pointer.fetch(char, nil) rescue nil) || (pointer.fetch(wildcard, nil) rescue nil)
+         matched_string << pointer.keys.first 
       end
       result = pointer.fetch(true, nil) rescue nil
-      result == {} ? true : false 
-   end
-
-   def recursive_match_wildcard(segment, tree_state)
-      binding.pry
+      result == {} ? matched_string.join("/") : false  
    end
 
 end
@@ -61,10 +58,10 @@ trie.insert("abc*r")
 
 # print "Expect True"
 # puts trie.match_wildcard("s*pple")
-print "Expect True"
+print "Expect True: "
 puts trie.match_wildcard("abcdr")
 
-print "Expect True"
+print "Expect True: "
 puts trie.match_wildcard("abcqr")
 
 
